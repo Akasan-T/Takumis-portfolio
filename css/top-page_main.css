@@ -1,0 +1,306 @@
+@charset "UTF-8";
+/* ----header---- */
+.top-page_header{
+    margin: 20px 0;
+    text-align: center;
+}
+
+.logo_img{
+    margin-top: 20px;
+    width: 33%;
+}
+
+/* ----main---- */
+
+/* ----first-view---- */
+.first-view ,.top-page_profile{
+    height: 100vh;
+}
+
+
+/* ----about---- */
+.main_visual{
+    width: 75%;
+    display: block;
+    margin:60px auto 0;
+    border-radius: 20px;
+}
+
+.top-page_background{
+    background-color: #A4DAE3;
+    padding-top: 80px;
+    height: 100vh;
+}
+
+.top-page_About-margin {
+    width: 100%;
+    margin: 0;
+    top: 80px;
+    padding: 0 0 110px;
+    position: relative;
+    overflow: hidden;
+}
+
+.top-page_title{
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 5px;
+    padding-top: 30px;
+}
+
+.top-page_profile{
+    padding-top: 20px;
+    display: block;
+    justify-content: center; /* ← 中央寄せ */
+    width: 1200px;
+    height: 700px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
+}
+
+.top-page_about-text_box{
+    display: flex;
+    margin: 0 100px;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.self-introduction{
+    margin-top: 30px;
+    margin-right: 60px;
+    width: 600px;
+}
+
+.name, .name_English{
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 15px;
+    
+}
+
+.profile_text{
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.face{
+    margin-top: 30px;
+    width: 30%;
+}
+
+.profile_icon{
+    justify-content: center;
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+}
+
+.profile_icon .github{
+    width: 60px;
+    height: 70px;
+    transition: background-color 1s;
+}
+
+.profile_icon .x{
+    padding-top: 10px;
+    width: 60px;
+    height: 60px;
+    transition: background-color 1s;
+}
+
+.profile_icon a:hover{
+    opacity:0.5;
+	transition:0.3s;
+    transition: background-color 1s;
+}
+
+/* ----skill---- */
+
+.top-page_Skill_background{
+    width: 100%;
+    margin: 0;
+    padding: 0 0 150px ;
+    position: relative;
+    top: 130px;
+    overflow: hidden;
+}
+
+/* .top-page_Skill_background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #A4DAE3;
+    transform: skewY(7deg) translateY(-90px); /* ← ここを逆にした！ */
+    /* z-index: -1;
+} */ 
+
+.skill_top  , .skill_btm {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.skill_top img, .skill_btm img{
+    width: 13%;
+}
+
+.skill_img_margin img:hover{
+    opacity:0.5;
+	transition:0.3s;
+}
+
+/* ----Gsap調整---- */
+.top-page_profile {
+    flex-shrink: 0;
+}
+
+.horizontal-container {
+    display: flex;
+}
+/* ----Work---- */
+.text_margin{
+    margin: 50px 200px 0;
+}
+
+.contact_top_text{
+    font-size: 20px;
+    line-height: 1.8;
+}
+
+/* ----横スクロール---- */
+
+.carousel {
+    overflow: hidden;
+    width: 100%; /* 表示範囲のサイズ */
+}
+
+.inner {
+    display: flex;
+    width: calc(15% * 6 * 2); /* 6枚×2セット分並べる */
+    animation: scroll 15s linear infinite; /* アニメーション時間を調整 */
+}
+
+.inner img {
+    width: 20%; /* 5枚並べるために 100% ÷ 5 = 20% */
+    height: auto;
+    padding: 0 15px;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%); /* 画像5枚分をスライド */
+    }
+}
+
+/* ----form---- */
+
+form {
+width: 40%;
+margin: 10% auto;
+min-width: 9rem; 
+}
+
+input, textarea {
+float: left;
+width: 100%;
+max-width: 100%;
+border: none;
+margin: 10px 0;
+padding: 0.5rem 1rem;
+border-radius: 0.3rem;
+background-color: #fff;
+color: darken(#f9f9f9, 50%);
+border: 1px solid #000;
+
+&[type=submit] {
+    background: #fff;
+    color: #0067C0;
+    width: auto;
+    margin:0 37% ;
+    border: 1px solid #2589d0;
+    padding:5px 13px ;
+    font-size: 30px;
+}
+
+&[type=submit]:hover {
+    background-color: transparent;
+    color: #fff;
+}
+
+&[type=submit]::before {
+    position: absolute;
+    z-index: -1;
+    transform: rotate(-30deg);
+    width: 100%;
+    height: 0;
+    border-radius: 5px;
+    background-color: #2589d0;
+    content: '';
+    transition: height .3s ease;
+}
+
+&[type=submit]:hover::before {
+    height: 350%;
+}
+
+&::placeholder {
+    color: darken(#f9f9f9, 50%);
+}
+
+&.error {
+    background: red;
+    color: #fff;
+    &::placeholder {
+    color: darken(red, 60%);
+    }
+}
+}
+textarea {
+height: 10rem;
+}
+.captcha {
+float:left;
+input {
+    float: right;
+}
+input[name=question] {
+    width: 4rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    text-align: right;
+    padding-right: 0;
+}
+[name=captcha] {
+    width: 5rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 0.5rem;
+    &::placeholder {
+    text-align: center;
+    }
+}
+}
+
+
+
+/* Generic Styles ;) */
+* {
+box-sizing: border-box;
+}
+
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+
+
+
