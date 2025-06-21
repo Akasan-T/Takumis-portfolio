@@ -62,12 +62,18 @@ document.addEventListener("DOMContentLoaded", ()=> {
         ease: "power2.out",
         delay:1.
     });
-
+    
+    gsap.from("#skill_icon_top", { //ロゴの表示
+        duration: 1.5,     // アニメーションの長さ（秒）
+        opacity: 0,        // 最初は透明
+        y: 50,             // 50px下から
+        ease: "power2.out" // イージング
+    });
 });
 
 gsap.registerPlugin(ScrollTrigger);
 
-    gsap.to(".main_visual", {　//メインビジュアル消す
+    gsap.to(".main_visual", { //メインビジュアル消す
         scale: 0.5,           // 小さくなる
         opacity: 0,           // 消える
         scrollTrigger: {
@@ -78,41 +84,83 @@ gsap.registerPlugin(ScrollTrigger);
         }
     });
 
-    ScrollTrigger.create({ //プロフィールのカードを800スクロール止める
-        trigger: ".top-page_background",
-        start: "top top",
-        end: "+=800",
-        pin: true,
-        scrub: true
-    });
+gsap.registerPlugin(ScrollTrigger);
 
-    gsap.to(".top-page_profile", { //プロフィールカードを左にスクロール
-        x: "-100%", // 左に画面外へ
-        scrollTrigger: {
-            trigger: ".top-page_profile",
-            start: "top+=800 top", // pinが終わった直後
-            end: "+=800",          // スライドに必要なスクロール量
-            scrub: true
-        }
-    });
+const profile = document.querySelector('.top-page_profile');
+const skill = document.querySelector('.top-page_skill');
 
-    gsap.from(".top-page_skill", { //スキルをスクロールさせてくる
-        x: "100%", // 右の外から
-        scrollTrigger: {
-            trigger: ".top-page_background",
-            start: "top+=800 top", // 同じタイミングで
-            end: "+=800",
-            scrub: true
-        }
-    });
+// 1. ピン止めだけの ScrollTrigger（1600px）
+ScrollTrigger.create({
+    trigger: ".top-page_background",
+    start: "top top",
+    end: "+=1600",
+    pin: true,
+    scrub: true
+});
 
-    gsap.to(".horizontal-container", {
-        x: () => `-${window.innerWidth}px`, // ← 明示的に100vw分スライド
-        scrollTrigger: {
-            trigger: ".top-page_background",
-            start: "top top",
-            end: "+=1000", // ← このスクロール量分だけで止める
-            pin: true,
-            scrub: true
-        }
+// 2. 表示切り替えの ScrollTrigger（800pxで切り替え）
+ScrollTrigger.create({
+    trigger: ".top-page_background",
+    start: "top top",
+    end: "+=800",
+    onEnter: () => {
+        profile.classList.add("active");
+        skill.classList.remove("active");
+    },
+    onLeave: () => {
+        profile.classList.remove("active");
+        skill.classList.add("active");
+    },
+    onEnterBack: () => {
+        profile.classList.add("active");
+        skill.classList.remove("active");
+    },
+    onLeaveBack: () => {
+        profile.classList.remove("active");
+        skill.classList.remove("active");
+    }
+});
+
+ScrollTrigger.create({
+    trigger: ".top-page_background",
+    start: "top top",
+    end: "+=800",
+    onEnter: () => {
+        profile.classList.add("active");
+        skill.classList.remove("active");
+    },
+    onLeave: () => {
+        profile.classList.remove("active");
+        skill.classList.add("active");
+
+    // スキルアイコンをアニメーション表示（onLeave時に）
+    gsap.to(".skill_top img, .skill_btm img", {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out"
     });
+    },
+    onEnterBack: () => {
+        profile.classList.add("active");
+        skill.classList.remove("active");
+
+        // スキルアイコンを非表示に戻す
+        gsap.to(".skill_top img, .skill_btm img", {
+            opacity: 0,
+            scale: 0.8,
+            duration: 0.3
+    });
+    },
+    onLeaveBack: () => {
+        profile.classList.remove("active");
+        skill.classList.remove("active");
+
+        // 念のため非表示にしておく
+        gsap.set(".skill_top img, .skill_btm img", {
+            opacity: 0,
+            scale: 0.8
+        });
+    }
+});

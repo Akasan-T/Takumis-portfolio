@@ -29,7 +29,10 @@
 .top-page_background{
     background-color: #A4DAE3;
     padding-top: 80px;
+    min-height: 100vh;
+    position: relative; /* ← pinと重ねるために必要 */
     height: 100vh;
+    overflow: hidden;
 }
 
 .top-page_About-margin {
@@ -48,15 +51,50 @@
     padding-top: 30px;
 }
 
-.top-page_profile{
-    padding-top: 20px;
-    display: block;
-    justify-content: center; /* ← 中央寄せ */
+.top-page_profile,.top-page_skill{
+    position: absolute;
+    top: 10px;  /* ここは必要に応じて調整 */
+    left: 50%;
+    transform: translateX(-50%);
     width: 1200px;
     height: 700px;
     background-color: #fff;
     border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.top-page_profile.active,
+.top-page_skill.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.box {
+    position: absolute;
+    width: 1200px;
+    height: 700px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none; /* 非表示時クリック無効化 */
+}
+
+.box.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+.top-page_profile.active,.top-page_skill.activ{
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .top-page_about-text_box{
@@ -126,17 +164,6 @@
     overflow: hidden;
 }
 
-/* .top-page_Skill_background::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #A4DAE3;
-    transform: skewY(7deg) translateY(-90px); /* ← ここを逆にした！ */
-    /* z-index: -1;
-} */ 
 
 .skill_top  , .skill_btm {
     display: flex;
@@ -148,18 +175,9 @@
     width: 13%;
 }
 
-.skill_img_margin img:hover{
-    opacity:0.5;
-	transition:0.3s;
-}
-
 /* ----Gsap調整---- */
-.top-page_profile {
-    flex-shrink: 0;
-}
-
 .horizontal-container {
-    display: flex;
+    position: relative;
 }
 /* ----Work---- */
 .text_margin{
