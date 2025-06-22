@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
             trigger: ".name",
             start: "top 80%", // 画面の下の方に来たら表示
         },
-        duration: 1,
+        duration: 1.5,
         opacity: 0,
         y: 30,
         ease: "power2.out"
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
             trigger: ".name_English",
             start: "top 80%",
         },
-        duration: 1,
+        duration: 2,
         opacity: 0,
         y: 30,
         ease: "power2.out",
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
             trigger: ".profile_text",
             start: "top 80%",
         },
-        duration: 1.2,
+        duration: 2.5,
         opacity: 0,
         y: 30,
         ease: "power2.out",
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         scrollTrigger: {
         trigger: ".face", 
         },
-        duration: 2,
+        duration: 3,
         opacity: 0,
         y: 100,
         ease: "power2.out",
@@ -64,10 +64,32 @@ document.addEventListener("DOMContentLoaded", ()=> {
     });
     
     gsap.from("#skill_icon_top", { //ロゴの表示
-        duration: 1.5,     // アニメーションの長さ（秒）
+        duration: 2,     // アニメーションの長さ（秒）
         opacity: 0,        // 最初は透明
         y: 50,             // 50px下から
         ease: "power2.out" // イージング
+    });
+
+    gsap.from(".contact_top_text", { //名前の登場
+        scrollTrigger: {
+            trigger: ".contact_top_text",
+            start: "top 80%", // 画面の下の方に来たら表示
+        },
+        duration: 2,
+        opacity: 0,
+        y: 30,
+        ease: "power2.out"
+    });
+
+    gsap.from(".Work_scroll", { //名前の登場
+        scrollTrigger: {
+            trigger: ".Work_scroll",
+            start: "top 80%", // 画面の下の方に来たら表示
+        },
+        duration: 3,
+        opacity: 0,
+        y: 30,
+        ease: "power2.out"
     });
 });
 
@@ -83,6 +105,7 @@ gsap.registerPlugin(ScrollTrigger);
             scrub: true,              // スクロール連動で滑らかに変化
         }
     });
+;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -163,4 +186,43 @@ ScrollTrigger.create({
             scale: 0.8
         });
     }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
+
+        document.querySelectorAll(".word").forEach((word) => {
+            tl.add(createChildTimeline(word), "-=90%");
+        });
+
+        function createChildTimeline(element) {
+            const elText = element.querySelector(".rect");
+            const tl = gsap
+                .timeline()
+                .from(element, {
+                    y: 16,
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: "power4.out",
+                })
+                .set(elText, { opacity: 0 })
+                .to(
+                    elText,
+                    {
+                        x: "105%",
+                        duration: 2,
+                        ease: "power4.out",
+                    },
+                "-=50%",
+                );
+        return tl;
+    }
+});
+
+ScrollTrigger.create({
+  trigger: ".Work_background",
+  start: "top top",
+  end: "+=100",
+  pin: true,
+  pinSpacing: true, // ← 絶対に必要
 });
