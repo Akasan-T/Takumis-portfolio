@@ -1,2 +1,2 @@
-# Takumi-s-portfolio
+# Takumis-portfolio
  portfolio制作で使用
