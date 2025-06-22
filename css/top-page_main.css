@@ -172,7 +172,7 @@
 /* ----Gsap調整---- */
 .horizontal-container {
     position: relative;
-    margin-top: 360px; /*セスポン支部対応必須*/
+    margin-top: 360px; /*セスポンシブ対応必須*/
 }
 /* ----Work---- */
 .text_margin{
@@ -378,7 +378,7 @@ span.word {
     }
 
     .face{
-        margin: 30px auto 0 ;
+        margin: 20px auto 0 ;
         width: 30%;
     }
 
@@ -386,10 +386,15 @@ span.word {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 330px;
-
     }
 
+    .skill_img_margin{
+        margin-top: 30px;
+    }
+    .skill_top img, .skill_btm img{
+        margin: auto;
+    }
+    
     .skill_img_margin{
         width: 330px;
         display: flex;
@@ -397,5 +402,41 @@ span.word {
 
     .skill_top img, .skill_btm img{
         width: 60%;
+    }
+
+    .text_margin{
+        margin: 40px 20px;
+    }
+
+    .contact_top_text{
+        font-size: 18px;
+    }
+
+    .inner img {
+    width: 40%; /* 5枚並べるために 100% ÷ 5 = 20% */
+    height: auto;
+    padding: 0 15px;
+    }
+
+    .container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 350px;
+    }
+
+    .top_rust_text span{ 
+    font-size: 40px;
+    padding: 5px;
+    }
+
+    .logo_footer {
+        margin-top: 200px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo_btm a{
+    width: 40%;
     }
 }
