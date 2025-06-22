@@ -28,7 +28,7 @@
 
 .top-page_background{
     background-color: #A4DAE3;
-    padding-top: 80px;
+    /* padding-top: 80px; */
     min-height: 100vh;
     position: relative; /* ← pinと重ねるために必要 */
     height: 100vh;
@@ -53,17 +53,11 @@
 
 .top-page_profile,.top-page_skill{
     position: absolute;
-    top: 10px;  /* ここは必要に応じて調整 */
+    top: 50px;  /* ここは必要に応じて調整 */
     left: 50%;
-    transform: translateX(-50%);
-    width: 1200px;
-    height: 700px;
+    transform: translate(-50%, -50%);
     background-color: #fff;
     border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
     z-index: 10;
     flex-shrink: 0;
 }
@@ -178,6 +172,7 @@
 /* ----Gsap調整---- */
 .horizontal-container {
     position: relative;
+    margin-top: 360px; /*セスポン支部対応必須*/
 }
 /* ----Work---- */
 .text_margin{
@@ -187,6 +182,7 @@
 .contact_top_text{
     font-size: 20px;
     line-height: 1.8;
+    text-align: center;
 }
 
 .menu_select{
@@ -285,4 +281,10 @@ span.word {
 
 .logo_btm a{
     width: 50%;
+}
+
+@media screen and (min-width: 1920px) {
+    .horizontal-container {
+        margin-top: 23%; /*セスポン支部対応必須*/
+    }
 }
