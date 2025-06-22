@@ -283,8 +283,119 @@ span.word {
     width: 50%;
 }
 
+/* ----16インチ以上レスポンシブ---- */
+
 @media screen and (min-width: 1920px) {
     .horizontal-container {
         margin-top: 23%; /*セスポン支部対応必須*/
+    }
+}
+
+/* ----スマホ版対応---- */
+@media screen and (max-width:768px) {
+    .logo_img{ /*ロゴ*/
+        margin-top: 200px;
+        width: 70%;
+    }
+
+    .main_visual{ /*メインビジュアル*/
+        width: 85%;
+        display: block;
+        margin:60px auto 0;
+        border-radius: 20px;
+    }
+
+    .top-page_title{
+        text-align: center;
+        font-size: 30px;
+        padding-bottom: 5px;
+        padding-top: 30px;
+    }
+
+    .top-page_about-text_box{
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        justify-content: center;
+    }
+
+    
+
+    .box {
+        position: absolute;
+        width: 330px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none; /* 非表示時クリック無効化 */
+    }
+
+    .self-introduction {
+        margin-top: 30px;
+        margin-right: 0;
+        width: 330px;
+    }
+
+    .top-page_about-text_box{
+        padding-top: 0;
+    }
+
+    .name, .name_English{
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 15px;
+        width: 330px;
+    }
+
+    .profile_text{
+        font-size: 18px;
+        line-height: 1.4;
+        width: 310px;
+        margin-left: 10px;
+    }
+    
+    .profile_icon{
+        width: 330px;
+        justify-content: center;
+        margin-top: 10px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .profile_icon .github{
+        width: 40px;
+        height: 50px;
+        transition: background-color 1s;
+    }
+
+    .profile_icon .x{
+        padding-top: 10px;
+        width: 40px;
+        height: 40px;
+        transition: background-color 1s;
+    }
+
+    .face{
+        margin: 30px auto 0 ;
+        width: 30%;
+    }
+
+    .skill_top  , .skill_btm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 330px;
+
+    }
+
+    .skill_img_margin{
+        width: 330px;
+        display: flex;
+    }
+
+    .skill_top img, .skill_btm img{
+        width: 60%;
     }
 }
