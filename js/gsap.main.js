@@ -222,7 +222,7 @@ window.addEventListener("DOMContentLoaded", () => {
 ScrollTrigger.create({
   trigger: ".Work_background",
   start: "top top",
-  end: "+=100",
+  end: "+=120",
   pin: true,
   pinSpacing: true, // ← 絶対に必要
 });
