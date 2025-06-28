@@ -1,2 +1,7 @@
 # Takumis-portfolio
- portfolio制作で使用
+
+### portfolioのソースコードです。
+
+#### 制作中の為更新されていきます!
+
+[ポートフォリオへ](https://takumisportfolio.main.jp)
