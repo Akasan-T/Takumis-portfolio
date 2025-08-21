@@ -23,6 +23,17 @@ html {
     min-width: 9rem;
 }
 
+/* ----header---- */
+header{
+    margin: 20px 0;
+    text-align: center;
+}
+
+.logo_img{
+    margin-top: 20px;
+    width: 33%;
+}
+
 /* ----button共通部分---- */
 .button-32 {
     display: flex;
@@ -101,4 +112,15 @@ footer {
     font-size: 1em;
     font-family: "GENEIANTIQUENV5-M";
     }
+}
+
+.logo_footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 600px;
+}
+
+.logo_btm a{
+    width: 50%;
 }

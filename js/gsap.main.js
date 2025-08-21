@@ -224,5 +224,5 @@ ScrollTrigger.create({
   start: "top top",
   end: "+=120",
   pin: true,
-  pinSpacing: true, // ← 絶対に必要
+  pinSpacing: false, // ← 絶対に必要
 });

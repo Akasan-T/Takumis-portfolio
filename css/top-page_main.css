@@ -1,15 +1,4 @@
 @charset "UTF-8";
-/* ----header---- */
-.top-page_header{
-    margin: 20px 0;
-    text-align: center;
-}
-
-.logo_img{
-    margin-top: 20px;
-    width: 33%;
-}
-
 /* ----main---- */
 
 /* ----first-view---- */
@@ -197,6 +186,7 @@
 }
 
 
+
 /* ----横スクロール---- */
 
 .carousel {
@@ -240,6 +230,7 @@ src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.
 .top_rust_text{
     height: 100vh;
     background-color: #A4DAE3;
+    margin-top: 0;
 }
 
 .top_rust_text span{ 
@@ -272,16 +263,17 @@ span.word {
         left: 0;
 }
 
-.logo_footer{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 600px;
+
+
+.Work_background {
+  position: relative; /* pin中はGSAPが inline-style で fixed にする */
+  z-index: 1;
 }
 
-.logo_btm a{
-    width: 50%;
+.spacer {
+    height: 120px; /* ピン解除後のスクロール分と揃える */
 }
+
 
 /* ----16インチ以上レスポンシブ---- */
 
@@ -458,3 +450,4 @@ span.word {
     width: 40%;
     }
 }
+
