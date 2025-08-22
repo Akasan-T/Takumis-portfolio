@@ -1,3 +1,6 @@
+
+// -----main-----
+
 // ロゴの動き
 document.addEventListener("DOMContentLoaded", ()=> {
     gsap.from("#logo_top", { //ロゴの表示
@@ -226,3 +229,4 @@ ScrollTrigger.create({
   pin: true,
   pinSpacing: false, // ← 絶対に必要
 });
+

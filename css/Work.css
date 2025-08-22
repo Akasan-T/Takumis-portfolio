@@ -12,11 +12,100 @@ h1 {
 }
 
 .Work_text_box{
-    margin: 30px 0;
+    margin: 50px 0;
     text-align: center;
     line-height: 1.8;
     font-size: 20px;
 }
+
+.carousel {
+    margin-top: 50px;
+    overflow: hidden;
+    width: 100%; /* 表示範囲のサイズ */
+}
+
+.inner {
+    display: flex;
+    width: calc(15% * 6 * 2); /* 6枚×2セット分並べる */
+    animation: scroll 15s linear infinite; /* アニメーション時間を調整 */
+}
+
+.inner img{
+    width: 25%; /* 5枚並べるために 100% ÷ 5 = 20% */
+    height: auto;
+    padding: 0 15px;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%); /* 画像5枚分をスライド */
+    }
+}
+
+/* Generic Styles ;) */
+* {
+box-sizing: border-box;
+}
+
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+
+.top_rust_text{
+    height: 100vh;
+    background-color: #A4DAE3;
+    margin-top: 0;
+}
+
+.top_rust_text span{ 
+    font-size: 70px;
+    padding: 5px;
+}
+
+.container {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: 300px;
+}
+
+span.word {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        line-height: 1;
+        font-size: 4rem;
+        font-weight: 900;
+}
+
+.rect {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: white;
+        top: 0;
+        left: 0;
+}
+
+
+
+.Work_background {
+  position: relative; /* pin中はGSAPが inline-style で fixed にする */
+  z-index: 1;
+}
+
+.spacer {
+    height: 120px; /* ピン解除後のスクロール分と揃える */
+}
+
+
+
 
 /* ----絞り込み---- */
 
@@ -111,8 +200,9 @@ h1 {
     width: 100%;
     height: 290px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0; 
     object-fit: cover;
+    border-bottom: 2px solid #000; /* 下線 */
 }
 
 .item_text {
@@ -184,4 +274,6 @@ h3{
 .pagetop:hover {
     box-shadow: 0 0 10px #2196F3;
 }
+
+
 
