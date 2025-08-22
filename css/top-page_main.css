@@ -147,6 +147,9 @@
     overflow: hidden;
 }
 
+.skill_top,.skill_btm{
+    margin-top: 30px;
+}
 
 .skill_top  , .skill_btm {
     display: flex;
@@ -155,7 +158,7 @@
 }
 
 .skill_top img, .skill_btm img{
-    width: 13%;
+    width: 15%;
 }
 
 /* ----Gsap調整---- */

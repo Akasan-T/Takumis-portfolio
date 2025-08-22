@@ -19,24 +19,24 @@
     <main>
         <h1>Work</h1>
         <div class="Work_scroll">
-                    <div class="carousel">
-                        <div class="inner">
-                            <img src="img/YL MEMORIA/YL MEMORIA.png" alt="">
-                            <img src="img/プルメリア.png" alt="">
-                            <img src="img/若鯱家-top.png" alt="">
-                            <img src="img/若鯱家会社概要.png" alt="">
-                            <img src="img/img/portfolio.png" alt="">
-                            <img src="img/HiKaRiWo_LP.png" alt="">
+            <div class="carousel">
+                <div class="inner">
+                    <img src="img/YL MEMORIA/YL MEMORIA.png" alt="">
+                    <img src="img/プルメリア.png" alt="">
+                    <img src="img/若鯱家-top.png" alt="">
+                    <img src="img/若鯱家会社概要.png" alt="">
+                    <img src="img/img/portfolio.png" alt="">
+                    <img src="img/HiKaRiWo_LP.png" alt="">
 
-                            <img src="img/YL MEMORIA.png" alt="">
-                            <img src="img/プルメリア.png" alt="">
-                            <img src="img/若鯱家-top.png" alt="">
-                            <img src="img/若鯱家会社概要.png" alt="">
-                            <img src="img/img/portfolio.png" alt="">
-                            <img src="img/HiKaRiWo_LP.png" alt="">
-                        </div>
-                    </div>
+                    <img src="img/YL MEMORIA.png" alt="">
+                    <img src="img/プルメリア.png" alt="">
+                    <img src="img/若鯱家-top.png" alt="">
+                    <img src="img/若鯱家会社概要.png" alt="">
+                    <img src="img/img/portfolio.png" alt="">
+                    <img src="img/HiKaRiWo_LP.png" alt="">
                 </div>
+            </div>
+        </div>
         <div class="Work_text_box">
             <p>ここでは、これまでに手がけた制作物をまとめています。</p>
             <p>デザインやコーディング、アイデアの工夫など、ジャンル問わず楽しんでもらえる作品を集めました。</p>
@@ -65,10 +65,9 @@
                         <!-- <label class="filter-btn"><input type="checkbox" value="2026">2026</label> -->
                         <label class="filter-btn"><input type="checkbox" value="2025">2025</label>
                         <label class="filter-btn"><input type="checkbox" value="2024">2024</label>
+                        <button class="all_button" onclick="resetFilter()">すべて表示</button>
                     </div>
                 </div>
-
-                <button class="all_button" onclick="resetFilter()">すべて表示</button>
             </div>
         </div>
 
@@ -156,6 +155,9 @@
     <footer>  <!--footer-->
         <p class="copyright">©Takumi Akahori</p>
     </footer>
-<script src="js/common_script.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        <script src="js/gsap.main.js"></script> <!--Gsapファイル-->
+        <script src="js/common_script.js"></script> 
 </body>
 </html>

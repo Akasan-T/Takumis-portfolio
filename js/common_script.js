@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 初期設定
   ['type-filters', 'tech-filters', 'year-filters'].forEach(setupFilters);
 
   function filterItems() {
@@ -23,9 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const techChecked = Array.from(document.querySelectorAll('#tech-filters input:checked')).map(cb => cb.value);
     const yearChecked = Array.from(document.querySelectorAll('#year-filters input:checked')).map(cb => cb.value);
 
-    document.querySelectorAll('#items .item').forEach(item => {
-      // 複数カテゴリ対応
-      const itemTypes = item.dataset.type.split(','); // 複数タイプ対応
+    const items = document.querySelectorAll('#items .item');
+
+    items.forEach(item => {
+      const itemTypes = item.dataset.type.split(',');z
       const itemTechs = item.dataset.tech ? item.dataset.tech.split(',') : [];
       const itemYear = item.dataset.year;
 
@@ -39,30 +39,40 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.add('hidden');
       }
     });
+
+    // 表示されるアイテムにGSAPアニメーション
+    const visibleItems = Array.from(document.querySelectorAll('#items .item:not(.hidden)'));
+    gsap.fromTo(
+      visibleItems,
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.1,
+        ease: "power1.out"
+      }
+    );
   }
 
   window.resetFilter = function() {
     document.querySelectorAll('.filter-btn input').forEach(cb => cb.checked = false);
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('selected'));
     document.querySelectorAll('.item').forEach(item => item.classList.remove('hidden'));
+    
+    // 全表示時もアニメーション
+    const allItems = Array.from(document.querySelectorAll('#items .item'));
+    gsap.fromTo(
+      allItems,
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.1,
+        ease: "power1.out"
+      }
+    );
   }
 
 });
-
-// セレクタ名（.pagetop）に一致する要素を取得
-const pagetop_btn = document.querySelector(".pagetop");
-// .pagetopをクリックしたら
-pagetop_btn.addEventListener("click", scroll_top);
-// ページ上部へスムーズに移動
-function scroll_top() {
-    window.scroll({ top: 0, behavior: "smooth" });
-}
-// スクロールされたら表示
-window.addEventListener("scroll", scroll_event);
-function scroll_event() {
-    if (window.pageYOffset > 100) {
-        pagetop_btn.style.opacity = "1";
-    } else if (window.pageYOffset < 100) {
-        pagetop_btn.style.opacity = "0";
-    }
-}
