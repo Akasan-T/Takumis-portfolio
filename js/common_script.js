@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = document.querySelectorAll('#items .item');
 
     items.forEach(item => {
-      const itemTypes = item.dataset.type.split(',');z
+      const itemTypes = item.dataset.type.split(',');
       const itemTechs = item.dataset.tech ? item.dataset.tech.split(',') : [];
       const itemYear = item.dataset.year;
 
