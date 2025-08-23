@@ -61,6 +61,7 @@ src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.
     height: 100vh;
     background-color: #A4DAE3;
     margin-top: 0;
+    padding: 20px;
 }
 
 .top_rust_text span{ 
@@ -97,7 +98,7 @@ span.word {
 
 .Work_background {
   position: relative; /* pin中はGSAPが inline-style で fixed にする */
-  z-index: 1;
+    z-index: 1;
 }
 
 .spacer {
@@ -108,6 +109,7 @@ span.word {
 
 
 /* ----絞り込み---- */
+
 
 .scroll-container {
     display: flex;
@@ -173,6 +175,11 @@ span.word {
     align-items: center;
     margin-bottom: 20px;
     flex-direction: column;
+    background: linear-gradient(
+        to bottom,
+        #F0F0F0 0% 
+        #A4DAE3 100%,    
+    );
 }
 
 .production_box{
@@ -235,19 +242,19 @@ h3{
 }
 
 @media (min-width: 1200px) {
-    .list {
+    .production_box {
         grid-template-columns: repeat(4, 1fr); /* 広い画面は4列 */
     }
 }
 
 @media (max-width: 768px) {
-    .list {
+    .production_box {
         grid-template-columns: repeat(2, 1fr); /* タブレットで2列 */
     }
 }
 
 @media (max-width: 480px) {
-    .list {
+    .production_box {
         grid-template-columns: 1fr; /* スマホは1列 */
     }
 }
@@ -273,6 +280,27 @@ h3{
 }
 .pagetop:hover {
     box-shadow: 0 0 10px #2196F3;
+}
+
+/* ----footer---- */
+
+
+
+.footer_logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    background: linear-gradient(
+        to bottom,
+        #A4DAE3 0%,    /* 上端 */
+        #F0F0F0 100%   /* 下端 */
+    );
+    padding: 20px;
+    padding-bottom: 50px;
+}
+
+.logo_btm a{
+width: 40%;
 }
 
 
