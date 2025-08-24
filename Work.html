@@ -10,11 +10,10 @@
     <link rel="stylesheet" href="css/Work.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-</head>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p&family=Noto+Serif+JP:wght@200..900&family=Oswald:wght@200..700&family=Zen+Old+Mincho&display=swap" rel="stylesheet">
 <body>
     <header id="top">
-        <a href="index.html"><img id="logo_top" class="logo_img"  src="img/Takumi's-Portfolio.png" alt="ロゴ画像"></a> <!--トップロゴ-->
+        <a href="index.html"><img class="logo_img"  src="img/Takumi's-Portfolio.png" alt="ロゴ画像"></a> <!--トップロゴ-->
     </header>
     <main>
         <h1>Work</h1>
@@ -74,12 +73,21 @@
 
         <!-- 作品カード -->
         <div class="production_box" id="items" >
-            <div class="item" data-type="front" data-tech="html/css,js" data-year="2024">
+            <div class="item" 
+                    data-type="front" 
+                    data-tech="html/css,js" 
+                    data-year="2024"
+                    data-images='[
+                        "img/YLMEMORIA/YL MEMORIA.png",
+                        "img/YLMEMORIA/Plumeria.png",
+                        "img/YLMEMORIA/list.png"
+                    ]'
+                    data-extra='<p>使用技術: HTML/CSS, JS</p><p>担当: フロントエンド</p>'>
                 <a href="#">
-                    <img src="img/YL MEMORIA/YL MEMORIA.png" alt="">
+                    <img src="img/YLMEMORIA/YL MEMORIA.png" alt="YL MEMORIA">
                     <div class="item_text">
-                        <h3>YL MEMORIA</h3>
-                        <p>文化祭・チーム制作・2024</p>
+                    <h3>YL MEMORIA</h3>
+                    <p>文化祭・チーム制作・2024</p>
                     </div>
                 </a>
             </div>
@@ -147,11 +155,19 @@
                 </a>
             </div>
         </div>
+        <div id="overlay"></div>
+        <div id="modal">
+            <span id="closeModal">&times;</span>
+            <div class="modal-content"></div>
+        </div>
     </main>
     <section>
         <div class="space"></div>
 		<div class="pagetop">⇧</div>
     </section>
+    <div class="footer_logo">
+        <a href="index.html"><img class="logo_btm" src="/img/Takumi's-Portfolio.png" alt=""></a>
+    </div>
     <footer>  <!--footer-->
         <p class="copyright">©Takumi Akahori</p>
     </footer>

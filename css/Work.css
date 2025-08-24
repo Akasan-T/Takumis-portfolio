@@ -9,6 +9,10 @@ h1 {
     font-size: 50px;
     padding-bottom: 5px;
     padding-top: 30px;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .Work_text_box{
@@ -61,6 +65,7 @@ src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.
     height: 100vh;
     background-color: #A4DAE3;
     margin-top: 0;
+    padding: 20px;
 }
 
 .top_rust_text span{ 
@@ -97,7 +102,7 @@ span.word {
 
 .Work_background {
   position: relative; /* pin中はGSAPが inline-style で fixed にする */
-  z-index: 1;
+    z-index: 1;
 }
 
 .spacer {
@@ -108,6 +113,7 @@ span.word {
 
 
 /* ----絞り込み---- */
+
 
 .scroll-container {
     display: flex;
@@ -173,6 +179,11 @@ span.word {
     align-items: center;
     margin-bottom: 20px;
     flex-direction: column;
+    background: linear-gradient(
+        to bottom,
+        #F0F0F0 0% 
+        #A4DAE3 100%,    
+    );
 }
 
 .production_box{
@@ -232,22 +243,32 @@ span.word {
 h3{
     text-align: center;
     font-size: 25px;
+    font-family: "Noto Serif JP", serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
 }
 
-@media (min-width: 1200px) {
-    .list {
+h5{
+    font-family: "M PLUS 1p", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@media (min-width: 1600px) {
+    .production_box {
         grid-template-columns: repeat(4, 1fr); /* 広い画面は4列 */
     }
 }
 
 @media (max-width: 768px) {
-    .list {
+    .production_box {
         grid-template-columns: repeat(2, 1fr); /* タブレットで2列 */
     }
 }
 
 @media (max-width: 480px) {
-    .list {
+    .production_box {
         grid-template-columns: 1fr; /* スマホは1列 */
     }
 }
@@ -275,5 +296,89 @@ h3{
     box-shadow: 0 0 10px #2196F3;
 }
 
+/* ----footer---- */
 
 
+
+.footer_logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    background: linear-gradient(
+        to bottom,
+        #A4DAE3 0%,    /* 上端 */
+        #F0F0F0 100%   /* 下端 */
+    );
+    padding: 20px;
+    padding-bottom: 50px;
+}
+
+.logo_btm a{
+width: 40%;
+}
+
+/* ----list---- */
+
+/* 背景の暗幕 */
+#overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 999;
+}
+
+/* モーダル本体 */
+#modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    width: 80%;
+    height: 700px;
+    max-width: 1200px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 1000;
+}
+
+
+#detail_box_title{
+    width: 600px;
+    font-size: 30px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#detail_box_left{
+    width: 650px;
+}
+
+#tag{
+    text-align: center;
+    width: 600px;
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+#prev-img, #next-img {
+    position: absolute; 
+    display: inline-block;
+    margin: 5px;
+    top: 25%;
+    left: 51.3%;
+}
+
+#prev-img { left: 5px; }    /* 左側に固定 */
+#next-img { right: 0; }   /* 右側に固定 */
+
+/* 閉じるボタン */
+#closeModal {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+}
