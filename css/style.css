@@ -8,7 +8,10 @@ html, body {
 }
 
 body{
-    font-family: "Noto Serif", serif ,"GENEIANTIQUENV5-M";
+    font-family: "Noto Serif JP", serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
     background-color: #F0F0F0;
     margin: 0 auto;
     overflow-x: hidden;

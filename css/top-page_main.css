@@ -38,6 +38,10 @@
     font-size: 50px;
     padding-bottom: 5px;
     padding-top: 30px;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .top-page_profile,.top-page_skill{

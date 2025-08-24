@@ -8,6 +8,10 @@ h1{
     text-align: center;
     font-size: 50px;
     padding-top: 30px;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 h2{
@@ -15,6 +19,10 @@ h2{
     font-size: 50px;
     padding-top: 20px;
     padding-bottom: 40px;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .About_background {
@@ -92,7 +100,6 @@ h2{
         #A4DAE3 0%,    /* 上端 */
         #F0F0F0 100%   /* 下端 */
     );
-    padding: 20px;
 }
 
 .profile_icon{
@@ -154,6 +161,7 @@ h2{
     height: 250px;
     background-color: #fff;
     border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .skill_icon {
@@ -168,7 +176,10 @@ h2{
 
 h5{
     font-size: 28px;
-    font-weight: bold;
+    font-family: "Noto Serif JP", serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
 }
 
 .skill_list img{
@@ -194,11 +205,15 @@ h5{
     transition: width 1s ease-in-out;
 }
 
-.skill_text_box{
+.skill_text_box p{
     font-size: 20px;
     line-height: 1.5;
     padding-left: 20px;
+    font-family: "M PLUS 1p", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
 
 /* ----キャリア---- */
 
