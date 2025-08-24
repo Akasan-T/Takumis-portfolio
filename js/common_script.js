@@ -91,27 +91,48 @@ document.addEventListener("DOMContentLoaded", () => {
     item.addEventListener("click", e => {
       e.preventDefault();
 
-      // 作品情報取得
-      const title = item.querySelector("h3").innerText;
-      const desc = item.querySelector("p").innerText;
-      currentImages = JSON.parse(item.dataset.images || '[]');
-      currentIndex = 0;
+      
+    // 作品情報取得（既存の h3 と p を利用）
+    const title = item.querySelector("h3").innerText;
+    const desc = item.querySelector("p").innerText;
+    currentImages = JSON.parse(item.dataset.images || '[]');
+    currentIndex = 0;
 
-      // モーダル内容を生成
-      modalContent.innerHTML = `
-        <div id="detail_box_left">
-          <div id="modal-images" style="">
-            <button id="prev-img">◀︎</button>
-            <img id="modal-img" src="${currentImages[0] || item.querySelector("img").src}" style="max-width:90%; height:330px; margin:10px; border-radius: 12px;">
-            <button id="next-img">▶︎</button>
+    // data属性から追加情報を取得
+    const role = item.dataset.role || '';
+    const description = item.dataset.description || '';
+    const url = item.dataset.url || '';
+    const github = item.dataset.github || '';
+    const techIcons = JSON.parse(item.dataset.techIcons || '[]');
+
+    // モーダル内容を生成
+    modalContent.innerHTML = `
+    <div id="modal_box">
+      <div id="detail_box_left">
+        <div id="modal-images">
+          <button id="prev-img">◀︎</button>
+          <img id="modal-img" src="${currentImages[0] || item.querySelector("img").src}" style="max-width:90%; height:330px; margin:10px; border-radius: 12px;">
+          <button id="next-img">▶︎</button>
           </div>
+          <div id="detail_box_left-text_box"> 
             <h2 id="detail_box_title">${title}</h2>
             <p id="tag">${desc}</p>
-            <p id="" 
+            <h4 id="language">担当箇所</h4>
+            <p id="role">${role}</p>
+            <h4 id="language">使用言語・フレームワークなど</h4>
+            <div id="tech-icons">
+            ${techIcons.map(icon => `<img src="${icon}" style="width:50px; margin:5px;">`).join('')}
+          </div> 
         </div>
-        <div>
-          
+      </div>
+      <div id="detail_box_right">
+        <p id="description">${description}</p>
+        <div id="links">
+          ${url ? `<a href="${url}" target="_blank">サイトを見る</a>` : ''}
+          ${github ? `<a href="${github}" target="_blank">GitHubを見る</a>` : ''}
         </div>
+      </div>
+    </div>
       `;
 
       overlay.style.display = "block";

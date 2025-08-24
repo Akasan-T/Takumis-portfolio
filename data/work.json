@@ -1,0 +1,33 @@
+
+
+[
+  {
+    "title": "YL MEMORIA",
+    "images":[
+        "img/YLMEMORIA/YL MEMORIA.png",
+        "img/YLMEMORIA/Plumeria.png",
+        "img/YLMEMORIA/list.png"
+    ],
+    "year": 2024,
+    "tech": ["html/css", "js"],
+    "type": ["front","design"],
+    "tag": "文化祭・チーム制作・Webサイト",
+    "role": "フロントエンド実装・デザイン",
+    "description": "文化祭で制作した初めてのWebサイト。デザイン制作からコーディングを担当しました。",
+    "url": "#",
+    "github": "https://github.com/Akasan-T/YLMEMORIA",
+    "tech_icons": [
+        "https://skillicons.dev/icons?i=html",
+        "https://skillicons.dev/icons?i=css",
+        "https://skillicons.dev/icons?i=js"
+    ]
+  },
+  {
+    "title": "Sample Project",
+    "image": "img/sample.png",
+    "year": 2023,
+    "tech": ["php", "laravel"],
+    "type": "backend",
+    "url": "https://example.com"
+  }
+]
