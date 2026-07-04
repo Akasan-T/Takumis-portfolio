@@ -110,13 +110,14 @@ add_action( 'customize_register', function ( $wp_customize ) {
 	}
 
 	$wp_customize->add_setting( 'takumi_bio', array(
-		'default'           => '2004年岐阜県生まれ。KADOKAWAドワンゴ情報工科学院と産業能率大学に在籍し、Web開発やマーケティングを学習中。フロントエンドからバックエンドまで幅広い技術を習得し、産学連携プロジェクトではチームリーダーとしてWebサイト開発を経験。実践力と企画力を活かし、多角的に活躍できる人材を目指しています。',
+		'default'           => '2004年岐阜県生まれ。KADOKAWAドワンゴ情報工科学院に在籍し、Web開発を学習中。産学連携プロジェクトではチームリーダーを経験。',
 		'sanitize_callback' => 'sanitize_textarea_field',
 	) );
 	$wp_customize->add_control( 'takumi_bio', array(
-		'label'   => '自己紹介文',
-		'section' => 'takumi_profile',
-		'type'    => 'textarea',
+		'label'       => '自己紹介文(トップページ用・短め)',
+		'description' => 'トップページ/登山モードのProfileセクションに表示されます。',
+		'section'     => 'takumi_profile',
+		'type'        => 'textarea',
 	) );
 
 	$wp_customize->add_setting( 'takumi_face', array(
@@ -127,6 +128,53 @@ add_action( 'customize_register', function ( $wp_customize ) {
 		'label'   => 'プロフィール写真',
 		'section' => 'takumi_profile',
 	) ) );
+
+	/* ---------- トップページ文言 ---------- */
+	$wp_customize->add_section( 'takumi_top_texts', array(
+		'title'    => 'トップページ文言設定',
+		'priority' => 31,
+	) );
+
+	$wp_customize->add_setting( 'takumi_top_tagline', array(
+		'default'           => 'フロントエンドからバックエンドまで、想いをかたちにする。',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'takumi_top_tagline', array(
+		'label'   => 'キャッチコピー(麓/Topセクション)',
+		'section' => 'takumi_top_texts',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'takumi_top_skill_desc', array(
+		'default'           => 'フロントエンドからバックエンドまで。HTML/CSSでの制作経験を軸に、Laravel・Django などのフレームワークにも挑戦中です。',
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'takumi_top_skill_desc', array(
+		'label'   => 'Skillセクションの説明文',
+		'section' => 'takumi_top_texts',
+		'type'    => 'textarea',
+	) );
+
+	$wp_customize->add_setting( 'takumi_top_work_desc', array(
+		'default'           => '個人制作から産学連携・実案件まで。チームリーダーとして指揮したプロジェクトも紹介しています。',
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'takumi_top_work_desc', array(
+		'label'   => 'Workセクションの説明文',
+		'section' => 'takumi_top_texts',
+		'type'    => 'textarea',
+	) );
+
+	$wp_customize->add_setting( 'takumi_top_contact_text', array(
+		'default'           => '最後までご覧いただきありがとうございました。<br>制作のご依頼・ご相談など、お気軽にご連絡ください。',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'takumi_top_contact_text', array(
+		'label'       => 'Contactセクションの案内文',
+		'description' => '改行したい箇所には &lt;br&gt; を挿入できます。',
+		'section'     => 'takumi_top_texts',
+		'type'        => 'textarea',
+	) );
 } );
 
 /* ============================================================
@@ -147,7 +195,95 @@ add_action( 'init', function () {
 		'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
 		'show_in_rest' => true,
 	) );
+
+	register_post_type( 'skill', array(
+		'labels' => array(
+			'name'          => 'スキル',
+			'singular_name' => 'スキル',
+			'add_new_item'  => 'スキルを追加',
+			'edit_item'     => 'スキルを編集',
+		),
+		'public'             => false,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'exclude_from_search'=> true,
+		'publicly_queryable' => false,
+		'has_archive'        => false,
+		'menu_icon'          => 'dashicons-awards',
+		'menu_position'      => 6,
+		'supports'           => array( 'title', 'page-attributes' ),
+		'show_in_rest'       => true,
+	) );
+
+	register_post_type( 'career', array(
+		'labels' => array(
+			'name'          => '経歴',
+			'singular_name' => '経歴',
+			'add_new_item'  => '経歴を追加',
+			'edit_item'     => '経歴を編集',
+		),
+		'public'             => false,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'exclude_from_search'=> true,
+		'publicly_queryable' => false,
+		'has_archive'        => false,
+		'menu_icon'          => 'dashicons-clock',
+		'menu_position'      => 7,
+		'supports'           => array( 'title', 'page-attributes' ),
+		'show_in_rest'       => true,
+	) );
 } );
+
+/* ---------- メタボックス共通処理 ---------- */
+
+/**
+ * フィールド定義から add_meta_box 用のレンダリング関数を生成する
+ */
+function takumi_meta_box_renderer( $fields, $prefix ) {
+	return function ( $post ) use ( $fields, $prefix ) {
+		wp_nonce_field( "takumi_{$prefix}_meta", "takumi_{$prefix}_meta_nonce" );
+		foreach ( $fields as $key => $conf ) {
+			$value = get_post_meta( $post->ID, '_takumi_' . $key, true );
+			$type  = isset( $conf[2] ) ? $conf[2] : 'text';
+			printf(
+				'<p><label for="takumi_%1$s"><strong>%2$s</strong><br><small>%3$s</small></label><br>',
+				esc_attr( $key ),
+				esc_html( $conf[0] ),
+				esc_html( $conf[1] )
+			);
+			if ( 'textarea' === $type ) {
+				printf( '<textarea id="takumi_%1$s" name="takumi_%1$s" rows="4" style="width:100%%">%2$s</textarea>', esc_attr( $key ), esc_textarea( $value ) );
+			} else {
+				printf( '<input type="text" id="takumi_%1$s" name="takumi_%1$s" value="%2$s" style="width:100%%">', esc_attr( $key ), esc_attr( $value ) );
+			}
+			echo '</p>';
+		}
+	};
+}
+
+/**
+ * メタボックスの入力値を保存する
+ */
+function takumi_save_meta_fields( $post_id, $fields, $prefix ) {
+	if ( ! isset( $_POST[ "takumi_{$prefix}_meta_nonce" ] ) ||
+		! wp_verify_nonce( $_POST[ "takumi_{$prefix}_meta_nonce" ], "takumi_{$prefix}_meta" ) ) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	foreach ( $fields as $key => $conf ) {
+		if ( isset( $_POST[ 'takumi_' . $key ] ) ) {
+			$type  = isset( $conf[2] ) ? $conf[2] : 'text';
+			$value = wp_unslash( $_POST[ 'takumi_' . $key ] );
+			update_post_meta( $post_id, '_takumi_' . $key, 'textarea' === $type ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ) );
+		}
+	}
+}
 
 /* ---------- 制作実績メタボックス ---------- */
 const TAKUMI_WORK_FIELDS = array(
@@ -161,40 +297,34 @@ const TAKUMI_WORK_FIELDS = array(
 	'icons' => array( 'スキルアイコン(カンマ区切り)', 'skillicons.dev のID。例: html,css,js' ),
 );
 
+/* ---------- スキルメタボックス ---------- */
+const TAKUMI_SKILL_FIELDS = array(
+	'icon'       => array( 'アイコン(skillicons.dev のID)', '例: html' ),
+	'experience' => array( '経験', '例: 4 yrs / Learning' ),
+	'percent'    => array( '習熟度(0-100)', '例: 90' ),
+	'note'       => array( '補足', '例: Webサイト制作で使用' ),
+);
+
+/* ---------- 経歴メタボックス ---------- */
+const TAKUMI_CAREER_FIELDS = array(
+	'date'        => array( '日付', '例: 2021.04' ),
+	'description' => array( '説明', '例: 高校在学中に自身のブログサイトの制作を経験。', 'textarea' ),
+);
+
 add_action( 'add_meta_boxes', function () {
-	add_meta_box( 'takumi_work_meta', '実績情報', function ( $post ) {
-		wp_nonce_field( 'takumi_work_meta', 'takumi_work_meta_nonce' );
-		foreach ( TAKUMI_WORK_FIELDS as $key => $conf ) {
-			$value = get_post_meta( $post->ID, '_takumi_' . $key, true );
-			printf(
-				'<p><label for="takumi_%1$s"><strong>%2$s</strong><br><small>%3$s</small></label><br>' .
-				'<input type="text" id="takumi_%1$s" name="takumi_%1$s" value="%4$s" style="width:100%%"></p>',
-				esc_attr( $key ),
-				esc_html( $conf[0] ),
-				esc_html( $conf[1] ),
-				esc_attr( $value )
-			);
-		}
-		echo '<p><small>ギャラリー画像はアイキャッチ画像と、本文に挿入した画像が使われます。</small></p>';
-	}, 'works', 'normal', 'high' );
+	add_meta_box( 'takumi_work_meta', '実績情報', takumi_meta_box_renderer( TAKUMI_WORK_FIELDS, 'work' ), 'works', 'normal', 'high' );
+	add_meta_box( 'takumi_skill_meta', 'スキル情報', takumi_meta_box_renderer( TAKUMI_SKILL_FIELDS, 'skill' ), 'skill', 'normal', 'high' );
+	add_meta_box( 'takumi_career_meta', '経歴情報', takumi_meta_box_renderer( TAKUMI_CAREER_FIELDS, 'career' ), 'career', 'normal', 'high' );
 } );
 
 add_action( 'save_post_works', function ( $post_id ) {
-	if ( ! isset( $_POST['takumi_work_meta_nonce'] ) ||
-		! wp_verify_nonce( $_POST['takumi_work_meta_nonce'], 'takumi_work_meta' ) ) {
-		return;
-	}
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		return;
-	}
-	foreach ( array_keys( TAKUMI_WORK_FIELDS ) as $key ) {
-		if ( isset( $_POST[ 'takumi_' . $key ] ) ) {
-			update_post_meta( $post_id, '_takumi_' . $key, sanitize_text_field( wp_unslash( $_POST[ 'takumi_' . $key ] ) ) );
-		}
-	}
+	takumi_save_meta_fields( $post_id, TAKUMI_WORK_FIELDS, 'work' );
+} );
+add_action( 'save_post_skill', function ( $post_id ) {
+	takumi_save_meta_fields( $post_id, TAKUMI_SKILL_FIELDS, 'skill' );
+} );
+add_action( 'save_post_career', function ( $post_id ) {
+	takumi_save_meta_fields( $post_id, TAKUMI_CAREER_FIELDS, 'career' );
 } );
 
 /* ---------- 制作実績の取得・カード出力 ---------- */
@@ -267,4 +397,89 @@ function takumi_get_works() {
 		'orderby'        => 'menu_order date',
 		'order'          => 'DESC',
 	) );
+}
+
+/* ---------- スキル・経歴の取得 ---------- */
+
+/**
+ * スキル一覧を取得(管理画面「スキル」に投稿がなければ既定値を返す)
+ * 各要素: array( アイコンID, 名前, 経験, 習熟度%, 補足 )
+ */
+function takumi_get_skills_data() {
+	$posts = get_posts( array(
+		'post_type'      => 'skill',
+		'posts_per_page' => -1,
+		'orderby'        => 'menu_order',
+		'order'          => 'ASC',
+	) );
+
+	if ( ! $posts ) {
+		return array(
+			array( 'html', 'HTML', '4 yrs', 90, 'Webサイト制作で使用' ),
+			array( 'css', 'CSS', '4 yrs', 80, 'Webサイト制作で使用' ),
+			array( 'js', 'JavaScript', 'Learning', 40, '経験半年・Webサイト制作で使用' ),
+			array( 'php', 'PHP', 'Learning', 20, '経験半年・基礎から学習中' ),
+			array( 'python', 'Python', '1 yr', 80, '基本構文を習得済み' ),
+			array( 'java', 'Java', 'Learning', 10, '経験半年・基礎から学習中' ),
+			array( 'django', 'Django', 'Learning', 20, '産学連携プロジェクトで制作経験あり' ),
+			array( 'laravel', 'Laravel', 'Learning', 35, 'Webアプリの制作経験あり' ),
+			array( 'mysql', 'MySQL', '<1 yr', 30, 'データベース構築で使用' ),
+			array( 'git', 'Git', '<1 yr', 30, 'リポジトリの管理で使用' ),
+			array( 'github', 'GitHub', '1 yr', 50, 'チーム開発でのリポジトリ共有で使用' ),
+			array( 'docker', 'Docker', '<1 yr', 25, '開発環境の構築経験あり' ),
+			array( 'wordpress', 'WordPress', '4 yrs', 90, 'Webサイト制作・テーマ開発で使用' ),
+			array( 'threejs', 'Three.js', 'Learning', 20, '本サイトの3D演出で使用' ),
+		);
+	}
+
+	return array_map( function ( $post ) {
+		return array(
+			get_post_meta( $post->ID, '_takumi_icon', true ),
+			get_the_title( $post ),
+			get_post_meta( $post->ID, '_takumi_experience', true ),
+			(int) get_post_meta( $post->ID, '_takumi_percent', true ),
+			get_post_meta( $post->ID, '_takumi_note', true ),
+		);
+	}, $posts );
+}
+
+/**
+ * 経歴一覧を取得(管理画面「経歴」に投稿がなければ既定値を返す)
+ * 各要素: array( 日付, タイトル, 説明 )
+ */
+function takumi_get_career_data() {
+	$posts = get_posts( array(
+		'post_type'      => 'career',
+		'posts_per_page' => -1,
+		'orderby'        => 'menu_order',
+		'order'          => 'ASC',
+	) );
+
+	if ( ! $posts ) {
+		return array(
+			array( '2021.04', '通信制高校に編入', '高校在学中に自身のブログサイトの制作を経験。' ),
+			array( '2024.04', 'KADOKAWAドワンゴ情報工科学院 入学', '入学後、プログラミングの学習を本格的に開始。' ),
+			array( '2024.09', '初めてのチーム制作を経験', '文化祭でのチーム制作を通じて協調性や責任感を養い、その経験が今の自信やキャリア形成につながっている。' ),
+			array( '2024.11', '初の産学連携にチームリーダーとして参加', '産学連携プロジェクトを通じて、企業との協働方法を学ぶ。' ),
+			array( '2025.04', '企業様の実案件コンペで受賞', 'コーダーとしてWebサイト制作に参加。' ),
+			array( '2025.05', 'Web制作案件の営業を開始', 'クライアントとのコミュニケーションを学びながら案件の営業を開始。' ),
+			
+		);
+	}
+
+	return array_map( function ( $post ) {
+		return array(
+			get_post_meta( $post->ID, '_takumi_date', true ),
+			get_the_title( $post ),
+			get_post_meta( $post->ID, '_takumi_description', true ),
+		);
+	}, $posts );
+}
+
+/**
+ * トップページ Skill セクション用の上位アイコンを取得
+ */
+function takumi_get_top_skill_icons( $limit = 6 ) {
+	$icons = array_filter( array_column( takumi_get_skills_data(), 0 ) );
+	return array_slice( $icons, 0, $limit );
 }

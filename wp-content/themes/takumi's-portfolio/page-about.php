@@ -13,34 +13,9 @@ $github  = get_theme_mod( 'takumi_github', 'https://github.com/Akasan-T' );
 $x_url   = get_theme_mod( 'takumi_x', 'https://x.com/hori_hori_ak' );
 $face    = get_theme_mod( 'takumi_face', $uri . '/assets/img/My_face.jpeg' );
 
-// スキル: skillicons.dev ID / 表示名 / 経験 / バー(%) / 補足
-$skills = array(
-	array( 'html', 'HTML', '4 yrs', 90, 'Webサイト制作で使用' ),
-	array( 'css', 'CSS', '4 yrs', 80, 'Webサイト制作で使用' ),
-	array( 'js', 'JavaScript', 'Learning', 40, '経験半年・Webサイト制作で使用' ),
-	array( 'php', 'PHP', 'Learning', 20, '経験半年・基礎から学習中' ),
-	array( 'python', 'Python', '1 yr', 80, '基本構文を習得済み' ),
-	array( 'java', 'Java', 'Learning', 10, '経験半年・基礎から学習中' ),
-	array( 'django', 'Django', 'Learning', 20, '産学連携プロジェクトで制作経験あり' ),
-	array( 'laravel', 'Laravel', 'Learning', 35, 'Webアプリの制作経験あり' ),
-	array( 'mysql', 'MySQL', '<1 yr', 30, 'データベース構築で使用' ),
-	array( 'git', 'Git', '<1 yr', 30, 'リポジトリの管理で使用' ),
-	array( 'github', 'GitHub', '1 yr', 50, 'チーム開発でのリポジトリ共有で使用' ),
-	array( 'docker', 'Docker', '<1 yr', 25, '開発環境の構築経験あり' ),
-	array( 'wordpress', 'WordPress', '4 yrs', 90, 'Webサイト制作・テーマ開発で使用' ),
-	array( 'threejs', 'Three.js', 'Learning', 20, '本サイトの3D演出で使用' ),
-);
-
-// 経歴: 日付 / タイトル / 説明
-$timeline = array(
-	array( '2021.04', '通信制高校に編入', '高校在学中に自身のブログサイトの制作を経験。' ),
-	array( '2024.04', 'KADOKAWAドワンゴ情報工科学院 入学', '入学後、プログラミングの学習を本格的に開始。' ),
-	array( '2024.04', '産業能率大学 入学', '経営学・マーケティングを学び始める。' ),
-	array( '2024.09', '初めてのチーム制作を経験', '文化祭でのチーム制作を通じて協調性や責任感を養い、その経験が今の自信やキャリア形成につながっている。' ),
-	array( '2024.11', '初の産学連携にチームリーダーとして参加', '産学連携プロジェクトを通じて、企業との協働方法を学ぶ。' ),
-	array( '2025.04', '企業様の実案件コンペで受賞', 'コーダーとしてWebサイト制作に参加。' ),
-	array( '2025.05', 'Web制作案件の営業を開始', 'クライアントとのコミュニケーションを学びながら案件の営業を開始。' ),
-);
+// スキル・経歴は管理画面の「スキル」「経歴」から編集(投稿がなければ既定値)
+$skills   = takumi_get_skills_data();
+$timeline = takumi_get_career_data();
 ?>
 
 <main>
