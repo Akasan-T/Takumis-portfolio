@@ -1,0 +1,26 @@
+# --- WordPressのコアファイル ---
+# コアファイルは公式からダウンロードできるため、Git管理に含めないのが一般的です
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/*.php
+/xmlrpc.php
+
+# --- wp-content 内の管理 ---
+# アップロードした画像やメディア、キャッシュ、プラグインは除外します
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/plugins/
+
+# --- セキュリティ・設定ファイル ---
+# データベースの接続情報が含まれるため、絶対にGitHubに上げてはいけません
+wp-config.php
+.env
+
+# --- OS・エディタ関連のゴミファイル ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

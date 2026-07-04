@@ -1,0 +1,1381 @@
+@charset "UTF-8";
+/* ============================================================
+   Takumi's Portfolio — 和モダン × Tech Dark Theme
+   ============================================================ */
+
+:root {
+  --bg: #070b14;
+  --bg-2: #0b1120;
+  --bg-3: #101830;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.1);
+  --text: #f0eee9;
+  --text-dim: #b9c1d2;
+  --accent: #e94560;
+  --accent-soft: rgba(233, 69, 96, 0.15);
+  --gold: #8fd4f5; /* 近未来テーマのアイスブルー */
+  --radius: 16px;
+  --font-serif: "Zen Old Mincho", "Noto Serif JP", serif;
+  --font-sans: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-en: "Marcellus", "Zen Old Mincho", serif;
+  --font-label: "Montserrat", "Zen Kaku Gothic New", sans-serif;
+  --header-h: 72px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: #fff; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a3550; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ============================================================
+   Loader
+   ============================================================ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+.loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader__mark {
+  font-family: var(--font-en);
+  font-size: 20px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text);
+  animation: loaderPulse 1.6s ease-in-out infinite;
+}
+.loader__bar {
+  width: 160px;
+  height: 1px;
+  background: var(--line);
+  overflow: hidden;
+  position: relative;
+}
+.loader__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: loaderSlide 1.2s ease-in-out infinite;
+}
+@keyframes loaderPulse { 50% { opacity: 0.4; } }
+@keyframes loaderSlide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 4vw, 48px);
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(7, 11, 20, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+.site-header__logo {
+  font-family: var(--font-en);
+  font-size: 17px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.global-nav ul {
+  display: flex;
+  gap: clamp(20px, 3vw, 40px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.global-nav a {
+  font-family: var(--font-label);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  position: relative;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+}
+.global-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s ease;
+}
+.global-nav a:hover,
+.global-nav a.is-current { color: var(--text); }
+.global-nav a:hover::after,
+.global-nav a.is-current::after { transform: scaleX(1); transform-origin: left; }
+
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  z-index: 110;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.nav-toggle span {
+  position: absolute;
+  left: 10px;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  transition: transform 0.35s ease, opacity 0.35s ease, top 0.35s ease;
+}
+.nav-toggle span:nth-child(1) { top: 15px; }
+.nav-toggle span:nth-child(2) { top: 22px; }
+.nav-toggle span:nth-child(3) { top: 29px; }
+.nav-toggle.is-open span:nth-child(1) { top: 22px; transform: rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { top: 22px; transform: rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .global-nav {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 11, 20, 0.96);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .global-nav.is-open { opacity: 1; visibility: visible; }
+  .global-nav ul { flex-direction: column; align-items: center; gap: 32px; }
+  .global-nav a { font-size: 20px; }
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 120%, #0b2038 0%, var(--bg) 70%);
+}
+/* 実写の富士山 → 3Dワイヤーフレームへのクロスフェード */
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 3; /* 写真フェーズ中はタイトル文字より前面に */
+  overflow: hidden;
+  background: var(--bg);
+  transition: opacity 2s ease, visibility 2s ease;
+}
+.hero__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 焼き込みテキストが見切れないよう全体を表示 */
+}
+.hero__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* ヘッダーの文字が読めるよう上端だけ軽く暗く */
+  background: linear-gradient(to bottom, rgba(7, 11, 20, 0.45), transparent 22%);
+}
+.hero__photo.is-gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* 登山トップ用: 画面全体を覆う導入写真 */
+.hero__photo--fixed {
+  position: fixed;
+  z-index: 60;
+}
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+}
+.hero__eyebrow {
+  font-family: var(--font-label);
+  font-size: clamp(11px, 1.4vw, 14px);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 9vw, 96px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.12em;
+}
+.hero__title .en {
+  display: block;
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: clamp(14px, 2.2vw, 22px);
+  letter-spacing: 0.45em;
+  color: var(--text-dim);
+  margin-top: 18px;
+  text-transform: uppercase;
+}
+.hero__lead {
+  margin-top: 28px;
+  font-size: clamp(14px, 1.7vw, 17px);
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+}
+.hero__climb { margin-top: 34px; }
+.hero__scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.hero__scroll::after {
+  content: "";
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent);
+  animation: scrollHint 2s ease-in-out infinite;
+}
+@keyframes scrollHint {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* 星空パーティクル背景 (three-stars.js) */
+.stars-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.page-hero > :not(.stars-canvas),
+.section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sub-page hero (About / Work) */
+.page-hero {
+  position: relative;
+  padding: calc(var(--header-h) + 90px) 20px 90px;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(233, 69, 96, 0.08), transparent),
+    radial-gradient(ellipse at 50% 130%, #131e3a 0%, var(--bg) 70%);
+}
+.page-hero__title {
+  font-family: var(--font-en);
+  font-size: clamp(44px, 8vw, 80px);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.page-hero__sub {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  color: var(--text-dim);
+  letter-spacing: 0.3em;
+  font-size: 14px;
+}
+
+/* ============================================================
+   Layout / Sections
+   ============================================================ */
+.section {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+}
+.section--alt {
+  background: linear-gradient(180deg, transparent, rgba(16, 24, 48, 0.55), transparent);
+}
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+.section-head__en {
+  font-family: var(--font-en);
+  font-size: clamp(34px, 5.5vw, 56px);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.section-head__ja {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+.section-head__ja::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+.section-head--center { text-align: center; }
+.section-head--center .section-head__ja::after {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* Reveal animation (JS toggles .is-visible) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   Profile
+   ============================================================ */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+.profile-photo {
+  position: relative;
+}
+.profile-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius);
+  filter: saturate(0.92);
+}
+.profile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 14px -14px -14px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  z-index: -1;
+}
+.profile-body .name-ja {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 38px);
+  letter-spacing: 0.2em;
+}
+.profile-body .name-en {
+  font-family: var(--font-en);
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+.profile-body .motto {
+  margin-top: 18px;
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+}
+.profile-body .bio {
+  margin-top: 24px;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 2.1;
+}
+.profile-sns {
+  display: flex;
+  gap: 14px;
+  margin-top: 28px;
+}
+.profile-sns a {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+.profile-sns a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-3px);
+}
+.profile-sns img {
+  width: 20px;
+  height: 20px;
+  filter: invert(0.92);
+}
+@media (max-width: 820px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .profile-photo { max-width: 300px; margin: 0 auto; }
+}
+
+/* Highlight cards */
+.highlight-list {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.highlight-card {
+  padding: 26px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+.highlight-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(233, 69, 96, 0.45);
+  background: var(--surface-hover);
+}
+.highlight-card .icon { font-size: 26px; }
+.highlight-card h3 {
+  margin-top: 12px;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.highlight-card p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.9;
+}
+@media (max-width: 820px) {
+  .highlight-list { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Skills
+   ============================================================ */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+.skill-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.skill-card:hover { transform: translateY(-4px); border-color: rgba(217, 179, 106, 0.5); }
+.skill-card > img { width: 46px; height: 46px; flex-shrink: 0; }
+.skill-card__body { flex: 1; min-width: 0; }
+.skill-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.skill-card__head h3 { font-size: 16px; font-weight: 700; letter-spacing: 0.05em; }
+.skill-card__head span {
+  font-family: var(--font-label);
+  font-size: 12px;
+  color: var(--gold);
+}
+.skill-bar {
+  margin-top: 10px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.skill-bar .fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.skill-card__note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Works — marquee (top page)
+   ============================================================ */
+.works-marquee {
+  overflow: hidden;
+  padding: 10px 0;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.works-marquee__track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.works-marquee:hover .works-marquee__track { animation-play-state: paused; }
+.works-marquee__item {
+  width: clamp(240px, 28vw, 360px);
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  position: relative;
+  flex-shrink: 0;
+}
+.works-marquee__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+.works-marquee__item:hover img { transform: scale(1.05); }
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .works-marquee__track { animation: none; }
+}
+
+/* ============================================================
+   Works — filters & grid (Work page)
+   ============================================================ */
+.filter-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 48px;
+}
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.filter-row__label {
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  min-width: 64px;
+}
+.filter-btn {
+  cursor: pointer;
+  padding: 9px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  background: transparent;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+.filter-btn input { display: none; }
+.filter-btn:hover { border-color: var(--accent); color: var(--text); }
+.filter-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.filter-reset {
+  padding: 9px 20px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 999px;
+  font-size: 13px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.filter-reset:hover { background: var(--gold); color: var(--bg); }
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 26px;
+}
+.work-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+}
+.work-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(233, 69, 96, 0.5);
+  box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.7);
+}
+.work-card.is-hidden { display: none; }
+.work-card__thumb {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-3);
+}
+.work-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+.work-card:hover .work-card__thumb img { transform: scale(1.06); }
+.work-card__body { padding: 20px 22px 24px; }
+.work-card__body h3 {
+  font-size: 17.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.work-card__meta {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+.work-card__tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.work-card__tags span {
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--gold);
+}
+.works-empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--text-dim);
+  display: none;
+}
+
+/* ============================================================
+   Work List — 全作品の詳細を常時表示するリスト(モーダル・展開なし)
+   ============================================================ */
+.works-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.work-row {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(22px, 3.5vw, 44px);
+  align-items: start;
+  padding: clamp(36px, 5vw, 56px) 0;
+  border-bottom: 1px solid var(--line);
+}
+.work-row:first-child { padding-top: 8px; }
+.work-row.is-hidden { display: none; }
+.work-row__gallery {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  border-radius: 12px;
+}
+.work-row__gallery img {
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.work-row__body h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(21px, 2.6vw, 26px);
+  letter-spacing: 0.08em;
+}
+.work-row__meta {
+  margin-top: 6px;
+  color: var(--gold);
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
+}
+.work-row__role {
+  margin-top: 14px;
+  font-size: 14.5px;
+  color: var(--text-dim);
+}
+.work-row__role strong { color: var(--text); font-weight: 700; }
+.work-row__desc {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 2.05;
+}
+.work-row__tags {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.work-row__tags span {
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--gold);
+}
+.work-row__icons {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.work-row__icons img { width: 38px; height: 38px; }
+.work-row__links {
+  margin-top: 22px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+@media (max-width: 820px) {
+  .work-row { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 34px;
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease, border-color 0.4s ease;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+}
+.btn:hover { border-color: var(--accent); color: #fff; }
+.btn:hover::before { transform: scaleX(1); transform-origin: left; }
+.btn--gold:hover { border-color: var(--gold); }
+.btn--gold::before { background: var(--gold); }
+.btn--gold:hover { color: var(--bg); }
+.btn-row { margin-top: 48px; text-align: center; }
+
+/* ============================================================
+   Timeline (Career)
+   ============================================================ */
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 28px;
+  list-style: none;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--gold));
+}
+.timeline li {
+  position: relative;
+  padding-bottom: 40px;
+}
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 12px rgba(233, 69, 96, 0.6);
+}
+.timeline__date {
+  font-family: var(--font-label);
+  font-size: 13.5px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+.timeline__body h3 {
+  margin-top: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.timeline__body p {
+  margin-top: 6px;
+  font-size: 14.5px;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   Contact
+   ============================================================ */
+.contact-box {
+  text-align: center;
+}
+.contact-box p {
+  color: var(--text-dim);
+  font-size: 15.5px;
+}
+.contact-links {
+  margin-top: 36px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 20px 36px;
+  text-align: center;
+}
+.site-footer__logo {
+  font-family: var(--font-en);
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.site-footer__nav {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+.site-footer__nav a {
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.3s ease;
+}
+.site-footer__nav a:hover { color: var(--accent); }
+.site-footer__copy {
+  margin-top: 26px;
+  font-size: 12.5px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
+/* Page top */
+.pagetop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(7, 11, 20, 0.8);
+  backdrop-filter: blur(8px);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: all 0.4s ease;
+}
+.pagetop.is-visible { opacity: 1; visibility: visible; transform: none; }
+.pagetop:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============================================================
+   Thanks message (bottom of top page)
+   ============================================================ */
+.thanks {
+  padding: clamp(80px, 12vw, 140px) 20px;
+  text-align: center;
+}
+.thanks p {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 3vw, 26px);
+  letter-spacing: 0.25em;
+  line-height: 2.2;
+  color: var(--text-dim);
+}
+.thanks p strong { color: var(--text); font-weight: 600; }
+
+/* ============================================================
+   Climb Mode — 登山道ポートフォリオ
+   ============================================================ */
+#climb-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 120%, #0b2038 0%, var(--bg) 70%);
+}
+.climb { position: relative; z-index: 1; }
+
+.climb-station {
+  min-height: 165vh;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(20px, 7vw, 110px);
+}
+.climb-station--start,
+.climb-station--summit {
+  min-height: 100vh;
+  justify-content: center;
+}
+.climb-station--summit { min-height: 130vh; align-items: flex-end; padding-bottom: 18vh; }
+.climb-station--right { justify-content: flex-end; }
+
+.climb-card {
+  position: relative;
+  width: min(600px, 100%);
+  padding: 12px 4px;
+}
+/* 箱の代わりに、文字の後ろだけ背景をぼかして暗くするスクリム(枠なし) */
+.climb-card::before {
+  content: "";
+  position: absolute;
+  inset: -70px -90px;
+  background: rgba(7, 11, 20, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 48%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 48%, transparent 80%);
+  z-index: -1;
+  pointer-events: none;
+}
+.climb-card h1,
+.climb-card h2,
+.climb-card p { text-shadow: 0 2px 18px rgba(7, 11, 20, 0.9); }
+.climb-card--center { text-align: center; }
+.climb-card--center .contact-links { margin-top: 28px; }
+
+.climb-eyebrow {
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.climb-title {
+  margin-top: 16px;
+  font-family: var(--font-serif);
+  font-size: clamp(34px, 5.6vw, 54px);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+}
+.climb-title .en {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: clamp(13px, 1.8vw, 18px);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.climb-scroll-hint {
+  margin-top: 28px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  animation: hintFloat 2s ease-in-out infinite;
+}
+@keyframes hintFloat { 50% { transform: translateY(6px); opacity: 0.6; } }
+
+.station-badge {
+  display: inline-block;
+  padding: 5px 16px;
+  border: 1px solid rgba(233, 69, 96, 0.6);
+  border-radius: 999px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+}
+.station-badge--summit {
+  border-color: rgba(226, 191, 125, 0.6);
+  color: var(--gold);
+}
+.climb-heading {
+  margin-top: 18px;
+  font-family: var(--font-en);
+  font-size: clamp(30px, 4.5vw, 42px);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.climb-heading span {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+}
+.climb-heading--center span { margin-left: auto; margin-right: auto; }
+
+.climb-text {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 2.05;
+  color: #dde2ec;
+}
+.climb-card .btn { margin-top: 26px; }
+
+.climb-profile {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+.climb-profile img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.climb-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  letter-spacing: 0.15em;
+}
+.climb-name small {
+  display: block;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.climb-profile .climb-text { margin-top: 10px; }
+
+.climb-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.climb-skills img { width: 48px; height: 48px; }
+
+.climb-works {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+.climb-works a {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 16 / 11;
+}
+.climb-works img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.4s ease;
+}
+.climb-works a:hover img { transform: scale(1.07); }
+
+.climb-descend {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  transition: color 0.3s ease;
+}
+.climb-descend:hover { color: var(--gold); }
+
+/* 展望スポット(実写の富士山が現れるセクション) */
+.climb-viewpoint {
+  position: relative;
+  height: 100vh;
+  min-height: 460px;
+  overflow: hidden;
+  margin: 6vh 0;
+}
+.climb-viewpoint img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.climb-viewpoint::before,
+.climb-viewpoint::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 26%;
+  pointer-events: none;
+}
+/* 上下を夜空に溶け込ませる */
+.climb-viewpoint::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(7, 11, 20, 0.95), transparent);
+}
+.climb-viewpoint::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(7, 11, 20, 0.95), transparent);
+}
+.climb-viewpoint__label {
+  position: absolute;
+  left: clamp(20px, 6vw, 80px);
+  bottom: clamp(48px, 12vh, 120px);
+  z-index: 1;
+  padding: 18px 26px;
+  background: rgba(7, 11, 20, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 2vw, 19px);
+  letter-spacing: 0.18em;
+}
+.climb-viewpoint__label span {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* 到着すると見出しの下から内容がプルダウンで開く */
+.climb-card__body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+}
+.climb-station.is-active .climb-card__body {
+  max-height: 720px;
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .climb-card__body { max-height: none; opacity: 1; transform: none; transition: none; }
+}
+
+/* 合目ナビ */
+.climb-nav {
+  position: fixed;
+  right: clamp(14px, 2.5vw, 32px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.climb-nav::before {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.climb-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row-reverse;
+}
+.climb-nav .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--text-dim);
+  transition: all 0.3s ease;
+}
+.climb-nav .label {
+  font-family: var(--font-serif);
+  font-size: 11.5px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: all 0.3s ease;
+}
+.climb-nav a:hover .label { opacity: 1; transform: none; }
+.climb-nav a.is-active .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+}
+.climb-nav a.is-active .label { opacity: 1; transform: none; color: var(--text); }
+
+@media (max-width: 640px) {
+  .climb-station { padding: 0 18px; justify-content: center !important; }
+  .climb-nav .label { display: none; }
+}
+
+/* 登山トップのフッター(固定canvasより手前に) */
+.climb + .site-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(7, 11, 20, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+.text-center { text-align: center; }
+
+/* 固定ヘッダーの高さぶん、アンカー位置をずらす */
+section[id] { scroll-margin-top: var(--header-h); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
