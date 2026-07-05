@@ -13,6 +13,9 @@
 /wp-content/upgrade/
 /wp-content/plugins/
 
+# Duplicatorが生成するバックアップ・移行用ファイル（DBダンプ等の機密情報を含む）
+/wp-content/backups-dup-lite/
+
 # --- セキュリティ・設定ファイル ---
 # データベースの接続情報が含まれるため、絶対にGitHubに上げてはいけません
 wp-config.php
