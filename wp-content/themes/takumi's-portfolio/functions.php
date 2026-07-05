@@ -3,11 +3,13 @@
  * Takumi Portfolio — テーマ機能
  */
 
+show_admin_bar(false);
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TAKUMI_VERSION', '1.0.0' );
+define( 'TAKUMI_VERSION', '1.0.6' );
 
 /* ============================================================
    テーマサポート
@@ -57,6 +59,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	// Three.js 登山モード(フロントページ / climbテンプレート)
 	if ( is_front_page() || is_page_template( 'page-climb.php' ) || is_page( 'climb' ) ) {
 		wp_enqueue_script( 'takumi-three-climb', $uri . '/assets/js/three-climb.js', array(), TAKUMI_VERSION, true );
+		wp_add_inline_script(
+			'takumi-three-climb',
+			'window.TAKUMI_SKILLS = ' . wp_json_encode( takumi_get_top_skills() ) . ';'
+			. 'window.TAKUMI_SKILL_ICON_BASE = ' . wp_json_encode( $uri . '/assets/img/skills/' ) . ';',
+			'before'
+		);
 	}
 } );
 
@@ -121,12 +129,43 @@ add_action( 'customize_register', function ( $wp_customize ) {
 	) );
 
 	$wp_customize->add_setting( 'takumi_face', array(
-		'default'           => get_template_directory_uri() . '/assets/img/My_face.jpeg',
+		// NOTE: テーマフォルダ名に含まれるアポストロフィがURLエンコードされると "%27s" となり、
+		// get_theme_mod() の sprintf プレースホルダー検出に誤って一致し値が壊れるため、
+		// ここでは空文字をデフォルトにし、実際のフォールバックは呼び出し側のPHPで行う。
+		'default'           => '',
 		'sanitize_callback' => 'esc_url_raw',
 	) );
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'takumi_face', array(
 		'label'   => 'プロフィール写真',
 		'section' => 'takumi_profile',
+	) ) );
+
+	/* ---------- SEO / OGP ---------- */
+	$wp_customize->add_section( 'takumi_seo', array(
+		'title'    => 'SEO / OGP設定',
+		'priority' => 32,
+	) );
+
+	$wp_customize->add_setting( 'takumi_seo_description', array(
+		'default'           => '赤堀匠海(Akahori Takumi)のポートフォリオサイト。Web制作のスキル・経歴・制作実績を紹介しています。',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'takumi_seo_description', array(
+		'label'       => 'サイトの説明文(meta description / OGP用)',
+		'description' => '検索結果やSNSでのシェア時に表示される説明文です。',
+		'section'     => 'takumi_seo',
+		'type'        => 'textarea',
+	) );
+
+	$wp_customize->add_setting( 'takumi_og_image', array(
+		// takumi_face と同じ理由でデフォルトは空文字にする(下の header.php 側でフォールバック)
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'takumi_og_image', array(
+		'label'       => 'OGP画像(SNSシェア時のサムネイル)',
+		'description' => '推奨サイズ: 1200×630px程度',
+		'section'     => 'takumi_seo',
 	) ) );
 
 	/* ---------- トップページ文言 ---------- */
@@ -370,7 +409,7 @@ function takumi_render_work_card( $post ) {
 			<?php if ( $icons ) : ?>
 				<div class="work-row__icons">
 					<?php foreach ( $icons as $icon ) : ?>
-						<img src="https://skillicons.dev/icons?i=<?php echo esc_attr( $icon ); ?>" alt="<?php echo esc_attr( $icon ); ?>" loading="lazy">
+						<img src="<?php echo esc_url( takumi_skill_icon_url( $icon ) ); ?>" alt="<?php echo esc_attr( $icon ); ?>" loading="lazy">
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
@@ -477,9 +516,37 @@ function takumi_get_career_data() {
 }
 
 /**
+ * スキルアイコンのURLを取得。ローカルに /assets/img/skills/{icon}.svg があればそれを使い、
+ * 無ければ skillicons.dev にフォールバックする(外部リクエスト削減のため)
+ */
+function takumi_skill_icon_url( $icon ) {
+	$local_path = get_template_directory() . '/assets/img/skills/' . $icon . '.svg';
+	if ( file_exists( $local_path ) ) {
+		return get_template_directory_uri() . '/assets/img/skills/' . $icon . '.svg';
+	}
+	return 'https://skillicons.dev/icons?i=' . rawurlencode( $icon );
+}
+
+/**
  * トップページ Skill セクション用の上位アイコンを取得
  */
 function takumi_get_top_skill_icons( $limit = 6 ) {
 	$icons = array_filter( array_column( takumi_get_skills_data(), 0 ) );
 	return array_slice( $icons, 0, $limit );
+}
+
+/**
+ * 登山モードの吹き出し表示用に、上位スキルのアイコンID・名前を取得
+ * ※ アイコン画像がローカルに無い場合(/assets/img/skills/{icon}.svg が404)でも
+ *   three-climb.js 側で名前のみの吹き出しにフォールバックする
+ */
+function takumi_get_top_skills( $limit = 6 ) {
+	$skills = array_slice( takumi_get_skills_data(), 0, $limit );
+
+	return array_map( function ( $skill ) {
+		return array(
+			'icon' => $skill[0],
+			'name' => $skill[1],
+		);
+	}, $skills );
 }

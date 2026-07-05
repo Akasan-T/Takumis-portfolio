@@ -955,6 +955,72 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 
+/* お問い合わせフォーム(Contact Form 7) */
+.contact-form {
+  width: min(480px, 100%);
+  margin: 32px auto 0;
+  text-align: left;
+}
+.contact-form label {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+.contact-form .wpcf7-form-control {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+}
+.contact-form textarea.wpcf7-form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+.contact-form .wpcf7-form-control:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.contact-form .wpcf7-submit {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 12px 32px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold);
+  font-family: var(--font-label);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.contact-form .wpcf7-submit:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+.contact-form .wpcf7-not-valid-tip {
+  color: var(--accent);
+  font-size: 12.5px;
+  margin-top: 4px;
+}
+.contact-form .wpcf7-response-output {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
 /* ============================================================
    Footer
    ============================================================ */

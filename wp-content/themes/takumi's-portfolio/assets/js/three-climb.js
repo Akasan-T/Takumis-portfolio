@@ -282,6 +282,76 @@ function init() {
     return { mesh, tP, phase: i * 1.7, tilt: (i % 2 ? 1 : -1) * 0.28, baseY: posV.y };
   });
 
+  /* ---------- スキル吹き出し(山道沿いに配置) ---------- */
+  const SKILLS = window.TAKUMI_SKILLS || [];
+  const SKILL_ICON_BASE = window.TAKUMI_SKILL_ICON_BASE || "";
+
+  function makeSkillBubbleTexture(iconImg) {
+    const c = document.createElement("canvas");
+    c.width = 180;
+    c.height = 210;
+    const ctx = c.getContext("2d");
+    const r = 20;
+    const w = c.width;
+    const h = 180; // 吹き出し本体(正方形寄り)の高さ。残りは尻尾。
+    ctx.fillStyle = "rgba(10, 16, 30, 0.88)";
+    ctx.strokeStyle = "rgba(233, 69, 96, 0.6)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.arcTo(w, 0, w, h, r);
+    ctx.arcTo(w, h, 0, h, r);
+    ctx.arcTo(0, h, 0, 0, r);
+    ctx.arcTo(0, 0, w, 0, r);
+    ctx.lineTo(w * 0.58, h);
+    ctx.lineTo(w * 0.42, h + 28);
+    ctx.lineTo(w * 0.34, h);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    if (iconImg) {
+      const size = 108;
+      ctx.drawImage(iconImg, (w - size) / 2, (h - size) / 2, size, size);
+    }
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  const skillBubbles = SKILLS.map((skill, i) => {
+    const n = SKILLS.length;
+    const tP = 0.36 + (i / Math.max(1, n - 1)) * 0.28; // Skillステーション(0.5)周辺に分散
+    const base = routePoint(tP);
+    const dir = new THREE.Vector3(base.x, 0, base.z).normalize();
+    const side = i % 2 ? 1 : -1;
+    const posV = base
+      .clone()
+      .addScaledVector(dir, 2.6 + (i % 3) * 1.1)
+      .add(new THREE.Vector3(side * 0.6, 1.6 + (i % 2) * 1.4, side * 0.6));
+
+    const mesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.7, 2.0),
+      new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })
+    );
+    mesh.position.copy(posV);
+    mesh.visible = false;
+    scene.add(mesh);
+
+    // アイコンはローカル配置のSVGのみ読み込む(外部ドメイン経由だとCanvasが汚染されテクスチャ化できないため)
+    const img = new Image();
+    const applyTexture = (loadedImg) => {
+      mesh.material.map = makeSkillBubbleTexture(loadedImg);
+      mesh.material.needsUpdate = true;
+    };
+    img.onload = () => applyTexture(img);
+    img.onerror = () => applyTexture(null);
+    img.src = SKILL_ICON_BASE + skill.icon + ".svg";
+
+    return { mesh, tP, phase: i * 2.1, baseY: posV.y };
+  });
+
   /* ---------- 空の色(夜 → 夜明け) ---------- */
   const skyStops = [
     { p: 0.0, c: new THREE.Color(0x050a16) },
@@ -371,6 +441,18 @@ function init() {
         mesh.position.y = baseY + Math.sin(t * 0.8 + phase) * 0.18;
         mesh.lookAt(camera.position);
         mesh.rotateY(tilt);
+      }
+    });
+
+    // スキル吹き出し: Skillセクションに近づくと現れ、ゆっくり漂う
+    skillBubbles.forEach(({ mesh, tP, phase, baseY }) => {
+      const prox = Math.max(0, 1 - Math.abs(p - tP) / 0.14);
+      const eased = prox * prox;
+      mesh.material.opacity = eased * 0.95;
+      mesh.visible = mesh.material.opacity > 0.02 && !!mesh.material.map;
+      if (mesh.visible) {
+        mesh.position.y = baseY + Math.sin(t * 0.9 + phase) * 0.15;
+        mesh.lookAt(camera.position);
       }
     });
 

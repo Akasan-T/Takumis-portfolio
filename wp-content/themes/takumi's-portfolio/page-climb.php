@@ -8,7 +8,7 @@ get_header();
 $uri   = get_template_directory_uri();
 $email = get_theme_mod( 'takumi_email', 'akahori.t.24kdgn@gmail.com' );
 $github = get_theme_mod( 'takumi_github', 'https://github.com/Akasan-T' );
-$face  = get_theme_mod( 'takumi_face', $uri . '/assets/img/My_face.jpeg' );
+$face  = get_theme_mod( 'takumi_face' ) ?: $uri . '/assets/img/My_face.jpeg';
 ?>
 
 <main class="climb">
@@ -60,7 +60,7 @@ $face  = get_theme_mod( 'takumi_face', $uri . '/assets/img/My_face.jpeg' );
 			<div class="climb-card__body">
 			<div class="climb-skills">
 				<?php foreach ( takumi_get_top_skill_icons() as $icon ) : ?>
-					<img src="https://skillicons.dev/icons?i=<?php echo esc_attr( $icon ); ?>" alt="<?php echo esc_attr( $icon ); ?>" loading="lazy">
+					<img src="<?php echo esc_url( takumi_skill_icon_url( $icon ) ); ?>" alt="<?php echo esc_attr( $icon ); ?>" loading="lazy">
 				<?php endforeach; ?>
 			</div>
 			<p class="climb-text">
@@ -123,6 +123,11 @@ $face  = get_theme_mod( 'takumi_face', $uri . '/assets/img/My_face.jpeg' );
 			<p class="climb-text">
 				<?php echo wp_kses_post( get_theme_mod( 'takumi_top_contact_text', '最後までご覧いただきありがとうございました。<br>制作のご依頼・ご相談など、お気軽にご連絡ください。' ) ); ?>
 			</p>
+			<?php if ( shortcode_exists( 'contact-form-7' ) ) : ?>
+				<div class="contact-form">
+					<?php echo do_shortcode( '[contact-form-7 id="3b0857e" title="Contact form 1"]' ); ?>
+				</div>
+			<?php endif; ?>
 			<div class="contact-links">
 				<a class="btn" href="mailto:<?php echo esc_attr( $email ); ?>">Email</a>
 				<a class="btn btn--gold" href="<?php echo esc_url( $github ); ?>" target="_blank" rel="noopener">GitHub</a>

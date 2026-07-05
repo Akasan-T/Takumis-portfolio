@@ -11,7 +11,7 @@ $name_en = get_theme_mod( 'takumi_name_en', 'Akahori Takumi' );
 $motto   = get_theme_mod( 'takumi_motto', 'Behind every smile lies effort' );
 $github  = get_theme_mod( 'takumi_github', 'https://github.com/Akasan-T' );
 $x_url   = get_theme_mod( 'takumi_x', 'https://x.com/hori_hori_ak' );
-$face    = get_theme_mod( 'takumi_face', $uri . '/assets/img/My_face.jpeg' );
+$face    = get_theme_mod( 'takumi_face' ) ?: $uri . '/assets/img/My_face.jpeg';
 
 // スキル・経歴は管理画面の「スキル」「経歴」から編集(投稿がなければ既定値)
 $skills   = takumi_get_skills_data();
@@ -64,7 +64,7 @@ $timeline = takumi_get_career_data();
 			<div class="skill-grid">
 				<?php foreach ( $skills as $skill ) : ?>
 					<div class="skill-card" data-reveal>
-						<img src="https://skillicons.dev/icons?i=<?php echo esc_attr( $skill[0] ); ?>" alt="<?php echo esc_attr( $skill[1] ); ?>" loading="lazy">
+						<img src="<?php echo esc_url( takumi_skill_icon_url( $skill[0] ) ); ?>" alt="<?php echo esc_attr( $skill[1] ); ?>" loading="lazy">
 						<div class="skill-card__body">
 							<div class="skill-card__head"><h3><?php echo esc_html( $skill[1] ); ?></h3><span><?php echo esc_html( $skill[2] ); ?></span></div>
 							<div class="skill-bar"><span class="fill" data-width="<?php echo esc_attr( $skill[3] ); ?>"></span></div>

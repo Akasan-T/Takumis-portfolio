@@ -9,6 +9,19 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/icon/logo_img.png">
+	<?php
+	$takumi_seo_desc  = get_theme_mod( 'takumi_seo_description', '赤堀匠海(Akahori Takumi)のポートフォリオサイト。Web制作のスキル・経歴・制作実績を紹介しています。' );
+	$takumi_seo_image = get_theme_mod( 'takumi_og_image' ) ?: get_template_directory_uri() . '/assets/img/img/portfolio.png';
+	$takumi_seo_url   = home_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ) ) );
+	?>
+	<meta name="description" content="<?php echo esc_attr( $takumi_seo_desc ); ?>">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="<?php bloginfo( 'name' ); ?>">
+	<meta property="og:title" content="<?php echo esc_attr( wp_get_document_title() ); ?>">
+	<meta property="og:description" content="<?php echo esc_attr( $takumi_seo_desc ); ?>">
+	<meta property="og:url" content="<?php echo esc_url( $takumi_seo_url ); ?>">
+	<meta property="og:image" content="<?php echo esc_url( $takumi_seo_image ); ?>">
+	<meta name="twitter:card" content="summary_large_image">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
