@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TAKUMI_VERSION', '1.0.6' );
+define( 'TAKUMI_VERSION', '1.0.8' );
 
 /* ============================================================
    テーマサポート
